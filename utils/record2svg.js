@@ -6,11 +6,13 @@ function record2svg({ roomId, record, width, height, limit, theme, title, fontSi
   let tpl = ''
 
   record.reverse().forEach(msg => {
-    const date = moment.unix(msg.time).add(8, 'hours').format('l LT')
+    // const date = moment.unix(msg.time).add(24, 'hours').format('l LT')
+    const date = new Date(moment.unix(msg.time))
+     var dateStr = date.getFullYear() + "/" + (date.getMonth() < 10 ? '0' + (date.getMonth()+1) : (date.getMonth()+1)) + "/" + (date.getDate() < 10 ? '0' + date.getDate() : date.getDate())+" "+ date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
     if(roomId === 'journey-ad.github') msg.msg = msg.msg.replace(/\u53d8\u6001/g, '\u597d\u4eba')
     tpl +=
 `<div class="message">
-  <span class="nickname"><span class="name" style="color:${processUnsafeHtml(msg.namecolor)}">${processUnsafeHtml(msg.name)}</span>::<span class="uid">${processUnsafeHtml(msg.uid)}</span>::<span class="time">${date}</span>:</span><span class="msg" style="color:${processUnsafeHtml(msg.msgcolor)}">${processUnsafeHtml(msg.msg)}</span>
+  <span class="nickname"><span class="name" style="color:${processUnsafeHtml(msg.namecolor)}">${processUnsafeHtml(msg.name)}</span>::<span class="uid">${processUnsafeHtml(msg.uid)}</span>::<span class="time">${dateStr}</span>:</span><span class="msg" style="color:${processUnsafeHtml(msg.msgcolor)}">${processUnsafeHtml(msg.msg)}</span>
 </div>`
   })
 

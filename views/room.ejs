@@ -298,21 +298,21 @@
 </head>
 <body>
     <div class="container">
-      <div class="status-box">Status: <span id="status">-</span> / <span id="online"><%=users.length%></span> online.
+      <div class="status-box">状态： <span id="status">-</span> | 在线[<span id="online"><%=users.length%></span>]
         <div id="userList"></div>
       </div>
       <div id="msgList"></div>
       <div class="send-box">
-        <input type="text" name="name" id="name" placeholder="nickname" maxlength="32">
+        <input type="text" name="name" id="name" placeholder="昵称" maxlength="32">
         <div class="input-wrap">
           <!--<input type="text" name="msg" id="msg" placeholder="some text..." maxlength="1000">-->
-          <textarea type="text" name="msg" id="msg" placeholder="some text..." maxlength="1000"></textarea>
+          <textarea type="text" name="msg" id="msg" placeholder="" maxlength="1000"></textarea>
         </div>
         <div class="color">
           <input id="namecolor" type="color" name="namecolor" value="#117743">
           <input id="msgcolor" type="color" name="msgcolor" value="#3d3d3d">
         </div>
-        <input type="button" name="send" id="send" value="Send">
+        <input type="button" name="send" id="send" value="发送">
       </div>
       <span class="toast"></span>
     </div>
@@ -350,10 +350,10 @@
           );
 
         socket.on('connect', function () {
-          $('#status').text('connected.')
+          $('#status').text('已连接')
           appendMsg({
             type: 'sys',
-            msg: 'Welcome to <%= title ? `${title} #${roomId}#` : roomId %>!'
+            msg: '欢迎来到 <%= title ? `${title} #${roomId}#` : roomId %>聊天室!'
           })
 
           notify.init()
@@ -388,7 +388,7 @@
 
         socket.on('msg', function (msgItem) {
           var date = new Date(msgItem.ts * 1000);
-          var dateStr = date.toLocaleDateString("en-US") + ' ' + date.toLocaleTimeString("en-US");
+          var dateStr = date.toLocaleDateString("zh-CN") + ' ' + date.toLocaleTimeString("zh-CN");
           var highlight = false;
 
           if(msgItem.uid !== userInfo.uid){
@@ -520,7 +520,7 @@
               $('#msg').trigger('change');
               $('#msg').focus();
             }else if(action === 'block'){
-              confirm('Are you sure to block '+name+'?') && blockUser(uid)
+              confirm('你确定要屏蔽 '+name+'?') && blockUser(uid)
             }
             $action.fadeOut(120, function(){
               $action.remove();
@@ -553,14 +553,13 @@
       $('#msg').on('click', function(){
         $('#msgList').animate({ scrollTop: $('#msgList')[0].scrollHeight }, 300)
       });
-      $('#status').text('get record...')
+      $('#status').text('连接失败...')
       $.getJSON(location.pathname + '/record', { limit: 100 }, function(data) {
-        $('#status').text('connecting...')
+        $('#status').text('连接中...')
         data = data.reverse()
         $.each(data, function(idx, msgItem){
           var date = new Date(msgItem.time * 1000);
-          var dateStr = date.toLocaleDateString("en-US") + ' ' + date.toLocaleTimeString("en-US");
-
+          var dateStr = date.toLocaleDateString("zh-CN") + ' ' + date.toLocaleTimeString("en-US");
           appendMsg({
             type: 'msg',
             name: msgItem.name,
@@ -602,7 +601,7 @@
           }
           $.each(data, function(idx, msgItem){
             var date = new Date(msgItem.time * 1000);
-            var dateStr = date.toLocaleDateString("en-US") + ' ' + date.toLocaleTimeString("en-US");
+            var dateStr = date.toLocaleDateString("zn-CN") + ' ' + date.toLocaleTimeString("zn-CN");
 
             appendMsg({
               type: 'msg',

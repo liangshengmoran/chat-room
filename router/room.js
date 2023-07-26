@@ -29,7 +29,7 @@ router.get('/@:roomId/record', async (req, res) => {
 router.get('/@:roomId/svg', async (req, res) => {
   const { roomId } = req.params
   let { width=500, height=300, limit=20, theme='', title=`${roomId}
-  @chat.getloli.com: ~`, fontSize='12' } = req.query
+  @chat: ~`, fontSize='12' } = req.query
 
   limit = Math.floor(Math.abs(Math.min(limit, 100) || 20))
 

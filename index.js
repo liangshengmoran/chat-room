@@ -33,7 +33,7 @@ socketIO.on('connection', socket => {
 
   const { cookie } = socket.handshake.headers
   // Get nickname from the cookie or generate a random name
-  const name = processInput(getCookie(cookie, 'name').trim().substring(0, 32) || `user_${Math.random().toString(36).substr(2, 5)}`)
+  const name = processInput(getCookie(cookie, 'name').trim().substring(0, 32) || `用户_${Math.random().toString(36).substr(2, 5)}`)
   // Get uid from the cookies or set the uid to be the same as the session ID on the first connection
   const uid = processInput(getCookie(cookie, 'uid').trim().substring(0, 7) || sid)
 
@@ -50,8 +50,8 @@ socketIO.on('connection', socket => {
     user = roomList[roomId][index]
   }else{
     roomList[roomId].push(user)
-    socketIO.to(roomId).emit('sys', `${user.name}(${user.uid}) join the chat.`)
-    console.log(`${user.name}(${user.uid})::${sid} join the room(${roomId})`)
+    socketIO.to(roomId).emit('sys', `${user.name}(${user.uid}) 加入聊天.`)
+    console.log(`${user.name}(${user.uid})::${sid} 加入房间(${roomId})`)
   }
 
   socketIO.to(roomId).emit('init', user)
@@ -70,7 +70,7 @@ socketIO.on('connection', socket => {
     socketIO.to(roomId).emit('rename', { uid: processInput(user.uid), name })
     socketIO.to(roomId).emit('online', roomList[roomId])
 
-    const msg = `${oldName}(${user.uid}) changed the name from ${oldName} to ${name}.`
+    const msg = `${oldName}(${user.uid}) 用户 ${oldName} 把昵称修改为 ${name}.`
     socketIO.to(roomId).emit('sys', processInput(msg))
     console.log(msg)
   })
@@ -93,11 +93,11 @@ socketIO.on('connection', socket => {
       if(user.session.length === 0) {
         roomList[roomId].splice(userIndex, 1)
 
-        socketIO.to(roomId).emit('sys', `${processInput(user.name)}(${processInput(user.uid)}) leave the chat.`)
+        socketIO.to(roomId).emit('sys', `${processInput(user.name)}(${processInput(user.uid)}) 离开聊天室.`)
         socketIO.to(roomId).emit('online', roomList[roomId])
       }
 
-      console.log(`${user.name}(${user.uid})::${sid} leave the room(${roomId})`)
+      console.log(`${user.name}(${user.uid})::${sid} 离开房间(${roomId})`)
     }
 
     // Clean the room if no one is chatting
@@ -136,7 +136,7 @@ app.set('roomList', roomList)
 app.use('/room', roomRouter)
 
 app.get('/', (req, res) => {
-  res.redirect('/room/@demo')
+  res.redirect('/room/@qingyun')
 });
 
 app.get('/filter', (req, res) => {
